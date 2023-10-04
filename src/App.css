@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+
+:root {
+  /* Typography */
+  --family: 'Source Sans 3', sans-serif;
+  --fs-sm: 14px;
+  --fs-md: 16px;
+  --fs-lg: 18px;
+  --fw-light: 300;
+  --fw-normal: 400;
+  --fw-bold: 600;
+
+  /* Color */
+}
+
+body {
+  background-color: black;
+  color: white;
+  font-family: var(--family);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+}
