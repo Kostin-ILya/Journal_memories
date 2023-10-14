@@ -20,3 +20,7 @@ body {
   font-size: var(--fs-md);
   font-weight: var(--fw-bold);
 }
+
+#root {
+  display: flex;
+}

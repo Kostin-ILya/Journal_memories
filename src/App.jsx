@@ -1,8 +1,10 @@
 import './App.css'
 import CreateMemoryBtn from './components/CreateMemoryBtn/CreateMemoryBtn'
+import MemoryForm from './components/MemoryForm/MemoryForm'
 import MemoryList from './components/MemoryList/MemoryList'
 import Header from './layouts/LeftPanel/Header'
 import LeftPanel from './layouts/LeftPanel/LeftPanel'
+import MainPanel from './layouts/MainPanel/MainPanel'
 
 const date = [
   {
@@ -27,6 +29,10 @@ function App() {
         <CreateMemoryBtn />
         <MemoryList memories={date} />
       </LeftPanel>
+
+      <MainPanel>
+        <MemoryForm />
+      </MainPanel>
     </>
   )
 }

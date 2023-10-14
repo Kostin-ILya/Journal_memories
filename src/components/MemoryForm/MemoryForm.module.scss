@@ -1,0 +1,55 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  .title {
+    font-size: 32px;
+    font-weight: 600;
+  }
+
+  .container {
+    display: flex;
+    gap: 30px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding: 10px;
+
+    label {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      width: 150px;
+    }
+
+    span {
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+
+  .input {
+    width: 100%;
+    position: relative;
+  }
+
+  input[type='date']::-webkit-calendar-picker-indicator {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 15%;
+    cursor: pointer;
+    position: absolute;
+    left: 90px;
+    top: 0;
+  }
+
+  textarea {
+    height: 420px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    outline: none;
+  }
+
+  .btn {
+    width: 180px;
+    padding: 10px 30px;
+    border-radius: 6px;
+    background: #312eb5;
+  }
+}
