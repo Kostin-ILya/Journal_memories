@@ -29,21 +29,25 @@
   .input {
     width: 100%;
     position: relative;
+    // background-color: inherit;
   }
 
   input[type='date']::-webkit-calendar-picker-indicator {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.2);
     border-radius: 15%;
     cursor: pointer;
     position: absolute;
     left: 90px;
-    top: 0;
+    top: 2px;
   }
 
-  textarea {
+  .textarea {
     height: 420px;
     border: 2px solid rgba(255, 255, 255, 0.1);
     outline: none;
+    &-error {
+      border: 2px solid rgb(220, 113, 113);
+    }
   }
 
   .btn {
@@ -51,5 +55,21 @@
     padding: 10px 30px;
     border-radius: 6px;
     background: #312eb5;
+    &:disabled {
+      filter: grayscale(0.7);
+    }
+    &:hover,
+    &:focus {
+      background: #4c4bae;
+    }
+  }
+
+  .error {
+    border-bottom: 2px solid rgb(220, 113, 113);
+  }
+
+  .error__msg {
+    margin-top: 5px;
+    color: red;
   }
 }
