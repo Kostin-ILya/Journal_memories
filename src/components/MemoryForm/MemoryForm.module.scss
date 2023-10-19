@@ -41,6 +41,14 @@
     top: 2px;
   }
 
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-text-fill-color: white;
+    -webkit-box-shadow: 0 0 0px 40rem black inset;
+    box-shadow: 0 0 0px 40rem black inset;
+  }
+
   .textarea {
     height: 420px;
     border: 2px solid rgba(255, 255, 255, 0.1);

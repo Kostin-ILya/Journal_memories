@@ -8,7 +8,7 @@ import folderIcon from '../../assets/folder.svg'
 
 import cl from './MemoryForm.module.scss'
 
-const MemoryForm = () => {
+const MemoryForm = ({ addMemory }) => {
   const {
     register,
     formState: { errors, isSubmitting },
@@ -17,11 +17,23 @@ const MemoryForm = () => {
   } = useForm({ mode: 'onBlur' })
 
   const onSubmit = async (newMemory) => {
-    await axios.post(
-      'https://65b0346f2f26c3f2139c9e06.mockapi.io/records',
-      newMemory
-    )
-    reset()
+    await axios
+      .post('https://65b0346f2f26c3f2139c9e06.mockapi.io/records', newMemory)
+      .then(() => {
+        addMemory((prevState) => [
+          ...prevState,
+          {
+            ...newMemory,
+            id: crypto.randomUUID(),
+            date: new Date(newMemory.date).toLocaleString().slice(0, 10),
+          },
+        ])
+        reset()
+      })
+      .catch((e) => {
+        console.log(e)
+        alert('Ошибка отправки записи на сервер')
+      })
   }
 
   return (
