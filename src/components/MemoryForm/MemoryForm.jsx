@@ -22,11 +22,7 @@ const MemoryForm = ({ addMemory }) => {
       .then(() => {
         addMemory((prevState) => [
           ...prevState,
-          {
-            ...newMemory,
-            id: crypto.randomUUID(),
-            date: new Date(newMemory.date).toLocaleString().slice(0, 10),
-          },
+          { ...newMemory, id: crypto.randomUUID() },
         ])
         reset()
       })
