@@ -8,13 +8,18 @@ import folderIcon from '../../assets/folder.svg'
 
 import cl from './MemoryForm.module.scss'
 
-const MemoryForm = ({ addMemory }) => {
+const MemoryForm = ({ addMemory, selectedMemory }) => {
   const {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
     reset,
-  } = useForm({ mode: 'onBlur' })
+  } = useForm({
+    mode: 'onBlur',
+    values: selectedMemory
+      ? selectedMemory
+      : { title: '', date: '', text: '', tag: '' },
+  })
 
   const onSubmit = async (newMemory) => {
     await axios

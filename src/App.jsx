@@ -13,6 +13,8 @@ import './App.css'
 
 function App() {
   const [memories, setMemories] = useState(null)
+  const [selectedMemory, setSelectedMemory] = useState(null)
+
   const [fetchError, setFetchError] = useState(false)
 
   useEffect(() => {
@@ -29,10 +31,19 @@ function App() {
     <>
       <LeftPanel>
         <Header />
-        <CreateMemoryBtn />
+        <CreateMemoryBtn
+          handleClick={() => {
+            setSelectedMemory(null)
+          }}
+        />
 
         {memories ? (
-          <MemoryList memories={memories} />
+          <MemoryList
+            memories={memories}
+            onSelectMemory={(id) => {
+              setSelectedMemory(memories.find((it) => it.id === id))
+            }}
+          />
         ) : !fetchError ? (
           <p>Загрузка данных...</p>
         ) : (
@@ -43,7 +54,7 @@ function App() {
       </LeftPanel>
 
       <MainPanel>
-        <MemoryForm addMemory={setMemories} />
+        <MemoryForm addMemory={setMemories} selectedMemory={selectedMemory} />
       </MainPanel>
     </>
   )

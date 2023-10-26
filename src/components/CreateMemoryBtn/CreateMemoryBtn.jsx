@@ -1,8 +1,12 @@
 import styles from './CreateMemoryBtn.module.scss'
 
-const CreateMemoryBtn = () => {
+const CreateMemoryBtn = ({ handleClick }) => {
   return (
-    <button className={styles['new-record-btn']} tabIndex={0}>
+    <button
+      className={styles['new-record-btn']}
+      onClick={handleClick}
+      tabIndex={0}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="20"

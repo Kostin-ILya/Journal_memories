@@ -10,13 +10,19 @@ const sortFn = (a, b) => {
   }
 }
 
-const MemoryList = ({ memories }) => {
+const MemoryList = ({ memories, onSelectMemory }) => {
   return (
     <div className={cl.memoriesList}>
       {memories.length ? (
         memories
           .sort(sortFn)
-          .map((item) => <MemoryListItem key={item.id} {...item} />)
+          .map((item) => (
+            <MemoryListItem
+              key={item.id}
+              handleClick={onSelectMemory}
+              {...item}
+            />
+          ))
       ) : (
         <p>Воспоминаний пока нет, добавьте первое</p>
       )}
