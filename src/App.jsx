@@ -54,7 +54,14 @@ function App() {
       </LeftPanel>
 
       <MainPanel>
-        <MemoryForm addMemory={setMemories} selectedMemory={selectedMemory} />
+        <MemoryForm
+          addMemory={setMemories}
+          selectedMemory={selectedMemory}
+          handleDelete={(id) => {
+            setMemories((prevState) => prevState.filter((it) => it.id !== id))
+            setSelectedMemory(null)
+          }}
+        />
       </MainPanel>
     </>
   )

@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form'
+import { IoTrashOutline } from 'react-icons/io5'
 
 import axios from 'axios'
 import clsx from 'clsx'
@@ -8,7 +9,13 @@ import folderIcon from '../../assets/folder.svg'
 
 import cl from './MemoryForm.module.scss'
 
-const MemoryForm = ({ addMemory, selectedMemory }) => {
+const API_BASE = 'https://65b0346f2f26c3f2139c9e06.mockapi.io/records'
+const handleError = (err) => {
+  console.log(err)
+  alert('Ошибка отправки запроса на сервер. Пожалуйста, повторите')
+}
+
+const MemoryForm = ({ addMemory, selectedMemory, handleDelete }) => {
   const {
     register,
     formState: { errors, isSubmitting },
@@ -23,30 +30,45 @@ const MemoryForm = ({ addMemory, selectedMemory }) => {
 
   const onSubmit = async (newMemory) => {
     await axios
-      .post('https://65b0346f2f26c3f2139c9e06.mockapi.io/records', newMemory)
-      .then(() => {
+      .post(API_BASE, newMemory)
+      .then((res) => {
         addMemory((prevState) => [
           ...prevState,
-          { ...newMemory, id: crypto.randomUUID() },
+          { ...newMemory, id: res.data.id },
         ])
         reset()
       })
       .catch((e) => {
-        console.log(e)
-        alert('Ошибка отправки записи на сервер')
+        handleError(e)
       })
+  }
+
+  const onDelete = () => {
+    if (selectedMemory) {
+      handleDelete(selectedMemory.id)
+
+      axios
+        .delete(`${API_BASE}/${selectedMemory.id}`)
+        .catch((e) => handleError(e))
+    } else {
+      reset()
+    }
   }
 
   return (
     <form className={cl.form} onSubmit={handleSubmit(onSubmit)}>
-      <input
-        className={clsx(cl.title, { [cl.error]: errors.title })}
-        type="text"
-        placeholder="Заголовок"
-        {...register('title', {
-          required: true,
-        })}
-      />
+      <div className={cl.titleWrapper}>
+        <input
+          className={clsx(cl.title, { [cl.error]: errors.title })}
+          type="text"
+          placeholder="Заголовок"
+          {...register('title', {
+            required: true,
+          })}
+        />
+
+        <IoTrashOutline className={cl.iconTrash} onClick={onDelete} />
+      </div>
 
       <div className={clsx(cl.container, { [cl.error]: errors.date })}>
         <label htmlFor="date">
