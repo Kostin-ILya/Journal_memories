@@ -23,4 +23,17 @@ body {
 
 #root {
   display: flex;
+  width: 1140px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1199px) {
+  #root {
+    width: 960px;
+  }
+}
+@media (max-width: 991px) {
+  #root {
+    width: 720px;
+  }
 }

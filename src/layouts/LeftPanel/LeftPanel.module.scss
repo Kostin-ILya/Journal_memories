@@ -6,3 +6,9 @@
   align-items: flex-start;
   gap: 30px;
 }
+
+@media (max-width: 991px) {
+  .leftPanel {
+    padding: 20px;
+  }
+}
