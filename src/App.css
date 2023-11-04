@@ -37,3 +37,19 @@ body {
     width: 720px;
   }
 }
+
+@media (max-width: 767px) {
+  #root {
+    width: 540px;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+}
+@media (max-width: 575px) {
+  #root {
+    width: 100%;
+    padding: 10px;
+  }
+}
