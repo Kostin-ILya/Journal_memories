@@ -1,3 +1,4 @@
+import { useRef, useEffect, useImperativeHandle } from 'react'
 import { useForm } from 'react-hook-form'
 import { IoTrashOutline } from 'react-icons/io5'
 
@@ -16,6 +17,12 @@ const handleError = (err) => {
 }
 
 const MemoryForm = ({ addMemory, selectedMemory, handleDelete }) => {
+  const titleRef = useRef(null)
+
+  useEffect(() => {
+    titleRef.current.focus()
+  }, [selectedMemory])
+
   const {
     register,
     formState: { errors, isSubmitting },
@@ -27,6 +34,10 @@ const MemoryForm = ({ addMemory, selectedMemory, handleDelete }) => {
       ? selectedMemory
       : { title: '', date: '', text: '', tag: '' },
   })
+
+  // Чтобы прокинуть свой ref на input из react-hook-form
+  const { ref, ...rest } = register('title', { required: true })
+  useImperativeHandle(ref, () => titleRef.current)
 
   const onSubmit = async (newMemory) => {
     await axios
@@ -62,9 +73,8 @@ const MemoryForm = ({ addMemory, selectedMemory, handleDelete }) => {
           className={clsx(cl.title, { [cl.error]: errors.title })}
           type="text"
           placeholder="Заголовок"
-          {...register('title', {
-            required: true,
-          })}
+          {...rest}
+          ref={titleRef}
         />
 
         <IoTrashOutline className={cl.iconTrash} onClick={onDelete} />
