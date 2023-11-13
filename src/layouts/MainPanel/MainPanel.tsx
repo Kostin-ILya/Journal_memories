@@ -1,6 +1,10 @@
 import styles from './MainPanel.module.scss'
 
-const MainPanel = ({ children }) => {
+interface MainPanelProps {
+  children: React.ReactNode
+}
+
+const MainPanel = ({ children }: MainPanelProps) => {
   return <main className={styles.main}>{children}</main>
 }
 
