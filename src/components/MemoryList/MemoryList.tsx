@@ -1,8 +1,14 @@
 import MemoryListItem from './MemoryListItem/MemoryListItem'
 
 import cl from './MemoryList.module.scss'
+import { Memory } from '../../interfaces'
 
-const sortFn = (a, b) => {
+interface MemoryListProps {
+  memories: Memory[]
+  onSelectMemory: (id: string) => void
+}
+
+const sortFn = (a: Memory, b: Memory) => {
   if (new Date(a.date).getTime() < new Date(b.date).getTime()) {
     return 1
   } else {
@@ -10,7 +16,7 @@ const sortFn = (a, b) => {
   }
 }
 
-const MemoryList = ({ memories, onSelectMemory }) => {
+const MemoryList = ({ memories, onSelectMemory }: MemoryListProps) => {
   return (
     <div className={cl.memoriesList}>
       {memories.length ? (
