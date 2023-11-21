@@ -10,10 +10,11 @@ import LeftPanel from './layouts/LeftPanel/LeftPanel'
 import MainPanel from './layouts/MainPanel/MainPanel'
 
 import './App.css'
+import { Memory } from './interfaces'
 
 function App() {
-  const [memories, setMemories] = useState(null)
-  const [selectedMemory, setSelectedMemory] = useState(null)
+  const [memories, setMemories] = useState<Memory[] | null>(null)
+  const [selectedMemory, setSelectedMemory] = useState<Memory | null>(null)
 
   const [fetchError, setFetchError] = useState(false)
 
@@ -40,9 +41,9 @@ function App() {
         {memories ? (
           <MemoryList
             memories={memories}
-            onSelectMemory={(id) => {
-              setSelectedMemory(memories.find((it) => it.id === id))
-            }}
+            onSelectMemory={(id) =>
+              setSelectedMemory(memories.find((it) => it.id === id)!)
+            }
           />
         ) : !fetchError ? (
           <p>Загрузка данных...</p>
@@ -57,8 +58,10 @@ function App() {
         <MemoryForm
           addMemory={setMemories}
           selectedMemory={selectedMemory}
-          handleDelete={(id) => {
-            setMemories((prevState) => prevState.filter((it) => it.id !== id))
+          handleDelete={(id: string) => {
+            setMemories(
+              (prevState) => prevState && prevState.filter((it) => it.id !== id)
+            )
             setSelectedMemory(null)
           }}
         />

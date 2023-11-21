@@ -1,6 +1,10 @@
 import styles from './CreateMemoryBtn.module.scss'
 
-const CreateMemoryBtn = ({ handleClick }) => {
+interface Props {
+  handleClick: () => void
+}
+
+const CreateMemoryBtn = ({ handleClick }: Props) => {
   return (
     <button
       className={styles['new-record-btn']}
