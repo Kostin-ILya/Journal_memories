@@ -1,6 +1,7 @@
 export interface Memory {
+  id: string
   title: string
   text: string
   date: string
-  id: string
+  tag: string
 }

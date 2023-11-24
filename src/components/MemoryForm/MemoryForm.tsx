@@ -9,18 +9,29 @@ import calendarIcon from '../../assets/calendar.svg'
 import folderIcon from '../../assets/folder.svg'
 
 import cl from './MemoryForm.module.scss'
+import { Memory } from '../../interfaces'
+
+interface MemoryFormProps {
+  addMemory: React.Dispatch<React.SetStateAction<Memory[] | null>>
+  selectedMemory: Memory | null
+  handleDelete: (id: string) => void
+}
 
 const API_BASE = 'https://65b0346f2f26c3f2139c9e06.mockapi.io/records'
-const handleError = (err) => {
+const handleError = (err: Error) => {
   console.log(err)
   alert('Ошибка отправки запроса на сервер. Пожалуйста, повторите')
 }
 
-const MemoryForm = ({ addMemory, selectedMemory, handleDelete }) => {
-  const titleRef = useRef(null)
+const MemoryForm = ({
+  addMemory,
+  selectedMemory,
+  handleDelete,
+}: MemoryFormProps) => {
+  const titleRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {
-    titleRef.current.focus()
+    titleRef.current && titleRef.current.focus()
   }, [selectedMemory])
 
   const {
@@ -39,17 +50,14 @@ const MemoryForm = ({ addMemory, selectedMemory, handleDelete }) => {
   const { ref, ...rest } = register('title', { required: true })
   useImperativeHandle(ref, () => titleRef.current)
 
-  const onSubmit = async (newMemory) => {
+  const onSubmit = async (newMemory: Omit<Memory, 'id'>) => {
     await axios
       .post(API_BASE, newMemory)
-      .then((res) => {
-        addMemory((prevState) => [
-          ...prevState,
-          { ...newMemory, id: res.data.id },
-        ])
+      .then(({ data }: { data: Memory }) => {
+        addMemory((prevState) => prevState && [...prevState, { ...data }])
         reset()
       })
-      .catch((e) => {
+      .catch((e: Error) => {
         handleError(e)
       })
   }

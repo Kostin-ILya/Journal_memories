@@ -40,7 +40,7 @@ function App() {
 
         {memories ? (
           <MemoryList
-            memories={memories}
+            list={memories}
             onSelectMemory={(id) =>
               setSelectedMemory(memories.find((it) => it.id === id)!)
             }

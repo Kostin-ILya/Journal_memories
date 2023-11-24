@@ -4,7 +4,7 @@ import cl from './MemoryList.module.scss'
 import { Memory } from '../../interfaces'
 
 interface MemoryListProps {
-  memories: Memory[]
+  list: Memory[]
   onSelectMemory: (id: string) => void
 }
 
@@ -16,11 +16,11 @@ const sortFn = (a: Memory, b: Memory) => {
   }
 }
 
-const MemoryList = ({ memories, onSelectMemory }: MemoryListProps) => {
+const MemoryList = ({ list, onSelectMemory }: MemoryListProps) => {
   return (
     <div className={cl.memoriesList}>
-      {memories.length ? (
-        memories
+      {list.length ? (
+        list
           .sort(sortFn)
           .map((item) => (
             <MemoryListItem
