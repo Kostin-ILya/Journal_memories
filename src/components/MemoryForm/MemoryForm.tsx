@@ -11,29 +11,27 @@ import folderIcon from '../../assets/folder.svg'
 import cl from './MemoryForm.module.scss'
 import { Memory } from '../../interfaces'
 
-interface MemoryFormProps {
-  addMemory: React.Dispatch<React.SetStateAction<Memory[] | null>>
-  selectedMemory: Memory | null
-  handleDelete: (id: string) => void
+const API_BASE = 'https://65b0346f2f26c3f2139c9e06.mockapi.io/records'
+const handleError = (err: unknown) => {
+  err instanceof Error &&
+    alert('Ошибка отправки запроса на сервер. Пожалуйста, повторите')
+
+  console.log(err)
 }
 
-const API_BASE = 'https://65b0346f2f26c3f2139c9e06.mockapi.io/records'
-const handleError = (err: Error) => {
-  console.log(err)
-  alert('Ошибка отправки запроса на сервер. Пожалуйста, повторите')
+interface MemoryFormProps {
+  addMemory: React.Dispatch<React.SetStateAction<Memory[]>>
+  setSelectedMemory: React.Dispatch<React.SetStateAction<Memory | null>>
+  selectedMemory: Memory | null
+  handleDelete: (id: string) => void
 }
 
 const MemoryForm = ({
   addMemory,
   selectedMemory,
+  setSelectedMemory,
   handleDelete,
 }: MemoryFormProps) => {
-  const titleRef = useRef<HTMLInputElement | null>(null)
-
-  useEffect(() => {
-    titleRef.current && titleRef.current.focus()
-  }, [selectedMemory])
-
   const {
     register,
     formState: { errors, isSubmitting },
@@ -41,25 +39,39 @@ const MemoryForm = ({
     reset,
   } = useForm({
     mode: 'onBlur',
-    values: selectedMemory
-      ? selectedMemory
-      : { title: '', date: '', text: '', tag: '' },
+    values: selectedMemory || { title: '', date: '', text: '', tag: '' },
   })
 
+  const titleRef = useRef<HTMLInputElement | null>(null)
   // Чтобы прокинуть свой ref на input из react-hook-form
   const { ref, ...rest } = register('title', { required: true })
   useImperativeHandle(ref, () => titleRef.current)
 
-  const onSubmit = async (newMemory: Omit<Memory, 'id'>) => {
-    await axios
-      .post(API_BASE, newMemory)
-      .then(({ data }: { data: Memory }) => {
-        addMemory((prevState) => prevState && [...prevState, { ...data }])
+  useEffect(() => {
+    titleRef.current?.focus()
+  }, [selectedMemory])
+
+  const onSubmit = async (newMemory: Memory | Omit<Memory, 'id'>) => {
+    try {
+      if ('id' in newMemory) {
+        const { data }: { data: Memory } = await axios.put(
+          `${API_BASE}/${newMemory.id}`,
+          newMemory
+        )
+
+        addMemory((prevState) =>
+          prevState.map((mem) => (mem.id === data.id ? { ...data } : mem))
+        )
+        setSelectedMemory(null)
+      } else {
+        const { data }: { data: Memory } = await axios.post(API_BASE, newMemory)
+
+        addMemory((prevState) => [...prevState, { ...data }])
         reset()
-      })
-      .catch((e: Error) => {
-        handleError(e)
-      })
+      }
+    } catch (error) {
+      handleError(error)
+    }
   }
 
   const onDelete = () => {

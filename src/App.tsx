@@ -13,7 +13,7 @@ import './App.css'
 import { Memory } from './interfaces'
 
 function App() {
-  const [memories, setMemories] = useState<Memory[] | null>(null)
+  const [memories, setMemories] = useState<Memory[]>([])
   const [selectedMemory, setSelectedMemory] = useState<Memory | null>(null)
 
   const [fetchError, setFetchError] = useState(false)
@@ -58,6 +58,7 @@ function App() {
         <MemoryForm
           addMemory={setMemories}
           selectedMemory={selectedMemory}
+          setSelectedMemory={setSelectedMemory}
           handleDelete={(id: string) => {
             setMemories(
               (prevState) => prevState && prevState.filter((it) => it.id !== id)
