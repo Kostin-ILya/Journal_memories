@@ -12,21 +12,31 @@ import MainPanel from './layouts/MainPanel/MainPanel'
 import './App.css'
 import { Memory } from './interfaces'
 
+axios.defaults.baseURL = 'https://65b0346f2f26c3f2139c9e06.mockapi.io/records'
+
 function App() {
   const [memories, setMemories] = useState<Memory[]>([])
   const [selectedMemory, setSelectedMemory] = useState<Memory | null>(null)
-
   const [fetchError, setFetchError] = useState(false)
 
   useEffect(() => {
     axios
-      .get('https://65b0346f2f26c3f2139c9e06.mockapi.io/records')
+      .get('')
       .then((res) => setMemories(res.data))
       .catch((e) => {
         console.log(e)
         setFetchError(true)
       })
   }, [])
+
+  const handleDelete = (id: string) => {
+    setMemories((prevState) => prevState.filter((mem) => mem.id !== id))
+    setSelectedMemory(null)
+  }
+
+  const handleSelectMemory = (id: string) => {
+    setSelectedMemory(memories.find((it) => it.id === id)!)
+  }
 
   return (
     <>
@@ -39,12 +49,7 @@ function App() {
         />
 
         {memories ? (
-          <MemoryList
-            list={memories}
-            onSelectMemory={(id) =>
-              setSelectedMemory(memories.find((it) => it.id === id)!)
-            }
-          />
+          <MemoryList list={memories} onSelectMemory={handleSelectMemory} />
         ) : !fetchError ? (
           <p>Загрузка данных...</p>
         ) : (
@@ -59,12 +64,7 @@ function App() {
           addMemory={setMemories}
           selectedMemory={selectedMemory}
           setSelectedMemory={setSelectedMemory}
-          handleDelete={(id: string) => {
-            setMemories(
-              (prevState) => prevState && prevState.filter((it) => it.id !== id)
-            )
-            setSelectedMemory(null)
-          }}
+          handleDelete={handleDelete}
         />
       </MainPanel>
     </>

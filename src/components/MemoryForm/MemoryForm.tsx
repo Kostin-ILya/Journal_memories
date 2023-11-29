@@ -11,7 +11,6 @@ import folderIcon from '../../assets/folder.svg'
 import cl from './MemoryForm.module.scss'
 import { Memory } from '../../interfaces'
 
-const API_BASE = 'https://65b0346f2f26c3f2139c9e06.mockapi.io/records'
 const handleError = (err: unknown) => {
   err instanceof Error &&
     alert('Ошибка отправки запроса на сервер. Пожалуйста, повторите')
@@ -55,7 +54,7 @@ const MemoryForm = ({
     try {
       if ('id' in newMemory) {
         const { data }: { data: Memory } = await axios.put(
-          `${API_BASE}/${newMemory.id}`,
+          `/${newMemory.id}`,
           newMemory
         )
 
@@ -64,7 +63,7 @@ const MemoryForm = ({
         )
         setSelectedMemory(null)
       } else {
-        const { data }: { data: Memory } = await axios.post(API_BASE, newMemory)
+        const { data }: { data: Memory } = await axios.post('', newMemory)
 
         addMemory((prevState) => [...prevState, { ...data }])
         reset()
@@ -78,9 +77,7 @@ const MemoryForm = ({
     if (selectedMemory) {
       handleDelete(selectedMemory.id)
 
-      axios
-        .delete(`${API_BASE}/${selectedMemory.id}`)
-        .catch((e) => handleError(e))
+      axios.delete(`/${selectedMemory.id}`).catch((e) => handleError(e))
     } else {
       reset()
     }
